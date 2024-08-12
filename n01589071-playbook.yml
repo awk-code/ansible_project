@@ -1,0 +1,10 @@
+# ~/automation/ansible/ansible_project/n01589071-playbook.yml
+---
+- name: Configure Linux servers
+  hosts: linux
+  become: yes
+  roles:
+    - profile-n01589071
+    - user-n01589071
+    - datadisk-n01589071
+    - webserver-n01589071

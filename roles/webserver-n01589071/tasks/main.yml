@@ -1,0 +1,19 @@
+---
+# tasks file for webserver-n01589071
+- name: Install Apache
+  ansible.builtin.package:
+    name: httpd
+    state: present
+
+- name: Create index.html files
+  ansible.builtin.template:
+    src: index.html
+    dest: /var/www/html/index.html
+    mode: '0444'
+  notify: Restart Apache
+
+- name: Enable and start Apache service
+  ansible.builtin.systemd:
+    name: httpd
+    enabled: yes
+    state: started

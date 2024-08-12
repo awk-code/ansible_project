@@ -1,0 +1,6 @@
+---
+# handlers file for webserver-n01589071
+- name: Restart Apache
+  ansible.builtin.systemd:
+    name: httpd
+    state: restarted
