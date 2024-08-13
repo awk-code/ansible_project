@@ -1,19 +1,42 @@
+# ~/automation/ansible/ansible_project/roles/webserver-n01589071/tasks/main.yml
 ---
-# tasks file for webserver-n01589071
+- name: Ensure Python is installed
+  raw: sudo yum install -y python3
+  become: yes
+
 - name: Install Apache
-  ansible.builtin.package:
+  yum:
     name: httpd
     state: present
+  become: yes
 
-- name: Create index.html files
-  ansible.builtin.template:
-    src: index.html
-    dest: /var/www/html/index.html
+- name: Create vm1.html with FQDN
+  copy:
+    content: "{{ ansible_fqdn }}"
+    dest: /var/www/html/vm1.html
     mode: '0444'
-  notify: Restart Apache
+  become: yes
+  when: ansible_hostname == "n01589071-linux-vm1"
 
-- name: Enable and start Apache service
-  ansible.builtin.systemd:
+- name: Create vm2.html with FQDN
+  copy:
+    content: "{{ ansible_fqdn }}"
+    dest: /var/www/html/vm2.html
+    mode: '0444'
+  become: yes
+  when: ansible_hostname == "n01589071-linux-vm2"
+
+- name: Create vm3.html with FQDN
+  copy:
+    content: "{{ ansible_fqdn }}"
+    dest: /var/www/html/vm3.html
+    mode: '0444'
+  become: yes
+  when: ansible_hostname == "n01589071-linux-vm3"
+
+- name: Ensure Apache is started
+  service:
     name: httpd
-    enabled: yes
     state: started
+    enabled: yes
+  become: yes
